@@ -93,3 +93,40 @@ where category_id in (
 	select category_id from category
     where name = 'Family');
 #7e
+select film.title, count(rental.inventory_id) from inventory
+inner join rental on inventory.inventory_id = rental.inventory_id
+inner join film on inventory.film_id = film.film_id
+group by rental.inventory_id
+order by count(rental.inventory_id) desc;
+#7f
+select store.store_id, sum(amount) from store
+inner join staff on store.store_id = staff.store_id
+inner join payment on staff.staff_id = payment.staff_id
+group by store.store_id;
+#7g
+select store.store_id, city.city, country.country from store
+inner join address on address.address_id = store.address_id
+inner join city on address.city_id = city.city_id
+inner join country on city.country_id = country.country_id;
+#7h
+select name, sum(payment.amount) from category
+inner join film_category 
+inner join inventory on film_category.film_id = inventory.film_id
+inner join rental on inventory.inventory_id = rental.inventory_id
+inner join payment on rental.rental_id = payment.rental_id
+group by name 
+order by sum(payment.amount) limit 5;
+#8a
+create view top_five_genres as
+select name, sum(payment.amount) from category
+inner join film_category 
+inner join inventory on film_category.film_id = inventory.film_id
+inner join rental on inventory.inventory_id = rental.inventory_id
+inner join payment on rental.rental_id = payment.rental_id
+group by name 
+order by sum(payment.amount) limit 5;
+#8b
+select * from top_five_genres;
+#8c
+drop view top_five_genres;
+
