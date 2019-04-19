@@ -66,3 +66,30 @@ inner join payment on customer.customer_id = payment.customer_id
 group by payment.customer_id
 order by last_name;
 #7a
+select title from film
+where title like 'K%' or title like 'Q%' and language_id IN (
+	select language_id
+	from language
+	where name = 'English');
+#7b
+select first_name, last_name from actor
+where actor_id in(
+	select actor_id from film_actor
+	where film_id in (
+		select film_id from film
+		where title = "Alone Trip"));
+#7c
+select first_name,last_name,email from customer
+inner join address on address.address_id = customer.address_id
+where city_id in (
+	select city_id from city
+	where country_id in (
+		select country_id from country
+		where country = 'Canada'));
+#7d
+select title from film
+inner join film_category on film.film_id = film_category.film_id
+where category_id in (
+	select category_id from category
+    where name = 'Family');
+#7e
